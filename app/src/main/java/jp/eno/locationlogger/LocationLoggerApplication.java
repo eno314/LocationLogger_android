@@ -12,7 +12,7 @@ public class LocationLoggerApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        final Intent intent = new Intent(this, LocationLoggerService.class);
-        startService(intent);
+        // final Intent intent = new Intent(this, LocationLoggerService.class);
+        // startService(intent);
     }
 }
