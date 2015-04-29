@@ -1,11 +1,14 @@
 package jp.eno.locationlogger;
 
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -44,6 +47,8 @@ public class LocationLoggerService extends Service {
         super.onCreate();
         Log.d("BBBBB", "service on create");
 
+        startForeground(100, buildNotificationForForeground());
+
         mGoogleApiClient = new GoogleApiClient.Builder(getApplicationContext())
                 .addApi(LocationServices.API)
                 .addConnectionCallbacks(getConnectionCallbacks())
@@ -65,9 +70,24 @@ public class LocationLoggerService extends Service {
         mGoogleApiClient.connect();
     }
 
+    private Notification buildNotificationForForeground() {
+        final Intent notificationIntent = new Intent(getApplicationContext(), HomeActivity.class);
+        final PendingIntent pendingIntent = PendingIntent
+                .getActivity(this, 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+        return new NotificationCompat.Builder(getApplicationContext())
+                .setSmallIcon(R.drawable.sample)
+                .setTicker("位置情報の取得開始")
+                .setContentTitle(getString(R.string.app_name))
+                .setContentText("位置情報取得中")
+                .setContentIntent(pendingIntent)
+                .build();
+    }
+
     @Override
     public void onDestroy() {
         Log.d("BBBBB", "service on destroy");
+        stopForeground(true);
         LocationServices.FusedLocationApi
                 .removeLocationUpdates(mGoogleApiClient, mLocationListener);
         super.onDestroy();
