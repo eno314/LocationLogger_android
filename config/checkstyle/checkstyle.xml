@@ -81,7 +81,6 @@
             <property name="tokens" value="METHOD_DEF,PARAMETER_DEF,VARIABLE_DEF" />
         </module>
         <module name="InnerAssignment" />
-        <module name="JUnitTestCase" />
         <module name="MagicNumber" />
         <module name="MissingSwitchDefault" />
         <module name="ModifiedControlVariable" />
